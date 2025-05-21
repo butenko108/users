@@ -9,7 +9,7 @@ interface UserItemProps {
 
 export const UserItem: FC<UserItemProps> = ({ user, onEdit, onDelete }) => {
 	return (
-		<div>
+		<li key={user.id} className="user-item">
 			<span>{user.first_name}</span>
 			<div className="user-actions">
 				<button type="button" onClick={() => onEdit(user)}>
@@ -19,6 +19,6 @@ export const UserItem: FC<UserItemProps> = ({ user, onEdit, onDelete }) => {
 					Удалить
 				</button>
 			</div>
-		</div>
+		</li>
 	);
 };

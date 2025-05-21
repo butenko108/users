@@ -1,13 +1,12 @@
 import { useQuery } from "@apollo/client";
 import type { FC } from "react";
 import { useState } from "react";
+import { UserForm, UserItem } from ".";
 import { useDeleteUser } from "../graphql/hooks";
 import { GET_USERS } from "../graphql/queries";
 import type { GetUsersData, User } from "../types/types";
-import UserForm from "./UserForm";
-import { UserItem } from "./UserItem";
 
-const UserList: FC = () => {
+export const UserList: FC = () => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -48,13 +47,14 @@ const UserList: FC = () => {
 
 			<ul className="user-list">
 				{data.users.map((user) => (
-					<li key={user.id} className="user-item">
-						<UserItem user={user} onDelete={handleDelete} onEdit={handleEdit} />
-					</li>
+					<UserItem
+						key={user.id}
+						user={user}
+						onDelete={handleDelete}
+						onEdit={handleEdit}
+					/>
 				))}
 			</ul>
 		</div>
 	);
 };
-
-export default UserList;

@@ -12,7 +12,7 @@ interface UserFormProps {
 	onClose: () => void;
 }
 
-const UserForm: FC<UserFormProps> = ({ user, onClose }) => {
+export const UserForm: FC<UserFormProps> = ({ user, onClose }) => {
 	const {
 		register,
 		handleSubmit,
@@ -66,5 +66,3 @@ const UserForm: FC<UserFormProps> = ({ user, onClose }) => {
 		</div>
 	);
 };
-
-export default UserForm;
