@@ -1,4 +1,3 @@
-// src/features/users/graphql/hooks.ts
 import { type Reference, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import type {
