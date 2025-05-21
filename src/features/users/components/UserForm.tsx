@@ -40,26 +40,42 @@ export const UserForm: FC<UserFormProps> = ({ user, onClose }) => {
 	};
 
 	return (
-		<div className="user-form-overlay">
-			<div className="user-form">
-				<h2>{user ? "Редактировать пользователя" : "Добавить пользователя"}</h2>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className="form-group">
-						<label htmlFor="name">Имя</label>
+		<div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+			<div className="bg-white p-6 rounded-lg w-full max-w-md">
+				<h2 className="text-lg font-semibold mb-4">
+					{user ? "Редактировать пользователя" : "Добавить пользователя"}
+				</h2>
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+					<div className="text-left">
+						<label htmlFor="name" className="block mb-1 font-medium">
+							Имя
+						</label>
 						<input
 							id="name"
 							{...register("name", { required: "Имя обязательно" })}
+							className="w-full px-3 py-2 border border-gray-300 rounded"
 						/>
 						{errors.name && (
-							<span className="error">{errors.name.message}</span>
+							<span className="text-red-500 text-sm">
+								{errors.name.message}
+							</span>
 						)}
 					</div>
 
-					<div className="form-actions">
-						<button type="button" onClick={onClose}>
+					<div className="flex justify-end gap-2">
+						<button
+							type="button"
+							onClick={onClose}
+							className="bg-gray-200 px-4 py-2 rounded"
+						>
 							Отмена
 						</button>
-						<button type="submit">{user ? "Сохранить" : "Добавить"}</button>
+						<button
+							type="submit"
+							className="bg-green-600 text-white px-4 py-2 rounded"
+						>
+							{user ? "Сохранить" : "Добавить"}
+						</button>
 					</div>
 				</form>
 			</div>

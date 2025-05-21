@@ -9,13 +9,24 @@ interface UserItemProps {
 
 export const UserItem: FC<UserItemProps> = ({ user, onEdit, onDelete }) => {
 	return (
-		<li key={user.id} className="user-item">
+		<li
+			key={user.id}
+			className="flex justify-between items-center py-4 border-b border-gray-300"
+		>
 			<span>{user.first_name}</span>
-			<div className="user-actions">
-				<button type="button" onClick={() => onEdit(user)}>
+			<div className="flex gap-2">
+				<button
+					type="button"
+					onClick={() => onEdit(user)}
+					className="bg-blue-600 text-white px-3 py-1 rounded"
+				>
 					Редактировать
 				</button>
-				<button type="button" onClick={() => onDelete(user.id)}>
+				<button
+					type="button"
+					onClick={() => onDelete(user.id)}
+					className="bg-red-600 text-white px-3 py-1 rounded"
+				>
 					Удалить
 				</button>
 			</div>

@@ -38,14 +38,18 @@ export const UserList: FC = () => {
 	if (!data) return <p>Обновите страницу...</p>;
 
 	return (
-		<div className="user-list-container">
-			<button type="button" onClick={handleAddNew} className="add-button">
+		<div className="w-full">
+			<button
+				type="button"
+				onClick={handleAddNew}
+				className="bg-green-600 text-white px-4 py-2 rounded mb-5"
+			>
 				Добавить пользователя
 			</button>
 
 			{isFormOpen && <UserForm user={selectedUser} onClose={handleCloseForm} />}
 
-			<ul className="user-list">
+			<ul className="list-none p-0">
 				{data.users.map((user) => (
 					<UserItem
 						key={user.id}
