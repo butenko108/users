@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
-import UserList from "./components/UserList";
+import UserList from "./features/components/UserList";
 
-import "./App.css";
+import "./styles/App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {

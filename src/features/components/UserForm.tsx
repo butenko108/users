@@ -1,17 +1,7 @@
-import { useMutation } from "@apollo/client";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { ADD_USER, UPDATE_USER } from "../graphql/mutations";
-import { GET_USERS } from "../graphql/queries";
-import type {
-	AddUserResponse,
-	AddUserVariables,
-	GetUsersData,
-	UpdateUserResponse,
-	UpdateUserVariables,
-	User,
-} from "../types/types";
+import { useAddUser, useUpdateUser } from "../graphql/hooks";
+import type { User } from "../types/types";
 
 interface UserFormInputs {
 	name: string;
@@ -33,40 +23,8 @@ const UserForm: FC<UserFormProps> = ({ user, onClose }) => {
 		},
 	});
 
-	const [addUser] = useMutation<AddUserResponse, AddUserVariables>(ADD_USER, {
-		update(cache, { data }) {
-			if (!data) return;
-
-			const cached = cache.readQuery<GetUsersData>({ query: GET_USERS }) || {
-				users: [],
-			};
-
-			cache.writeQuery<GetUsersData>({
-				query: GET_USERS,
-				data: { users: [...cached.users, data.insert_user_one] },
-			});
-		},
-		onCompleted: () => {
-			toast.success("Пользователь успешно добавлен");
-			onClose();
-		},
-		onError: (error) => {
-			toast.error(`Ошибка при добавлении пользователя: ${error.message}`);
-		},
-	});
-
-	const [updateUser] = useMutation<UpdateUserResponse, UpdateUserVariables>(
-		UPDATE_USER,
-		{
-			onCompleted: () => {
-				toast.success("Пользователь успешно обновлен");
-				onClose();
-			},
-			onError: (error) => {
-				toast.error(`Ошибка при обновлении пользователя: ${error.message}`);
-			},
-		},
-	);
+	const [addUser] = useAddUser(onClose);
+	const [updateUser] = useUpdateUser(onClose);
 
 	const onSubmit = (data: UserFormInputs) => {
 		if (user) {

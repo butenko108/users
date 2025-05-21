@@ -1,53 +1,18 @@
-import { type Reference, useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import type { FC } from "react";
 import { useState } from "react";
-import { toast } from "react-toastify";
-import { DELETE_USER } from "../graphql/mutations";
+import { useDeleteUser } from "../graphql/hooks";
 import { GET_USERS } from "../graphql/queries";
-import type {
-	DeleteUserData,
-	DeleteUserVars,
-	GetUsersData,
-	User,
-} from "../types/types";
+import type { GetUsersData, User } from "../types/types";
 import UserForm from "./UserForm";
+import { UserItem } from "./UserItem";
 
 const UserList: FC = () => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [isFormOpen, setIsFormOpen] = useState(false);
 
 	const { loading, error, data } = useQuery<GetUsersData>(GET_USERS);
-
-	const [deleteUser] = useMutation<DeleteUserData, DeleteUserVars>(
-		DELETE_USER,
-		{
-			update(cache, { data }) {
-				if (!data) return;
-				const userId = data.delete_user_by_pk.id;
-
-				cache.modify({
-					fields: {
-						user(
-							existingUserRefs: readonly Reference[] | undefined,
-							{ readField },
-						) {
-							const userRefs = existingUserRefs ?? [];
-
-							return userRefs.filter(
-								(userRef) => readField("id", userRef) !== userId,
-							);
-						},
-					},
-				});
-			},
-			onCompleted() {
-				toast.success("Пользователь успешно удален");
-			},
-			onError(error) {
-				toast.error(`Ошибка при удалении пользователя: ${error.message}`);
-			},
-		},
-	);
+	const [deleteUser] = useDeleteUser();
 
 	const handleDelete = (id: string) => {
 		if (window.confirm("Вы уверены, что хотите удалить этого пользователя?")) {
@@ -71,7 +36,7 @@ const UserList: FC = () => {
 
 	if (loading) return <p>Загрузка...</p>;
 	if (error) return <p>Ошибка: {error.message}</p>;
-	if (!data) return null;
+	if (!data) return <p>Обновите страницу...</p>;
 
 	return (
 		<div className="user-list-container">
@@ -84,15 +49,7 @@ const UserList: FC = () => {
 			<ul className="user-list">
 				{data.users.map((user) => (
 					<li key={user.id} className="user-item">
-						<span>{user.first_name}</span>
-						<div className="user-actions">
-							<button type="button" onClick={() => handleEdit(user)}>
-								Редактировать
-							</button>
-							<button type="button" onClick={() => handleDelete(user.id)}>
-								Удалить
-							</button>
-						</div>
+						<UserItem user={user} onDelete={handleDelete} onEdit={handleEdit} />
 					</li>
 				))}
 			</ul>
