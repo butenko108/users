@@ -3,11 +3,14 @@
 Это приложение для управления списком пользователей с возможностью добавления, редактирования и удаления.
 
 ## Технологии
+- ViteJS
 - React
 - Apollo Client
 - GraphQL
 - React Hook Form
 - React Toastify
+- BiomeJS (instead of eslint, prettier)
+- Tailwind CSS
 
 ## Инструкция по запуску
 
